@@ -1,15 +1,22 @@
 require('dotenv').config()
-const admin = require("firebase-admin");
+
 const jwt = require('jsonwebtoken');
 const router = require("express").Router()
 
 const { body, validationResult } = require("express-validator");
+const admin = require("firebase-admin");
+
+// Mongo DB Connections
+// Your web app's Firebase configuration
 var serviceAccount = require("./firebase_auth.json");
 
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
+ 
 });
+
+
 
 // Endpoint for generating a JWT token
 // Register endpoint
@@ -34,6 +41,8 @@ router.post('/register',
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
+
+            console.log(admin)
             // Create the user in Firebase Auth
             const userRecord = await admin.auth().createUser({
                 email,
@@ -46,7 +55,7 @@ router.post('/register',
             // Return the JWT token in the response
             res.json({ message: "User Registetion SuccessFully", token: jwtToken });
         } catch (error) {
-            console.error('Registration error:', error);
+            // console.error('Registration error:', error);
             res.status(500).json({
                 error: true,
                 message: error.message
@@ -66,7 +75,7 @@ router.post('/login', async (req, res, next) => {
         const jwtToken = jwt.sign({ uid: user.uid }, process.env.SECRET);
 
         // Return the JWT token in the response
-        res.json({ massage: "Login Sucessfully", token: jwtToken });
+        res.json({ massage: "Login Sucessfully", email: user.email, token: jwtToken });
     } catch (error) {
         res.status(500).json({
             error: true,
