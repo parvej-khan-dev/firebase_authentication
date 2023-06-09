@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const jwt = require('jsonwebtoken');
 const router = require("express").Router()
-
+const { verifyAuthToken } = require('./middleware')
 const { body, validationResult } = require("express-validator");
 const admin = require("firebase-admin");
 
@@ -12,8 +12,8 @@ var serviceAccount = require("./firebase_auth.json");
 
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
- 
+    credential: admin.credential.cert(serviceAccount),
+
 });
 
 
@@ -21,6 +21,7 @@ admin.initializeApp({
 // Endpoint for generating a JWT token
 // Register endpoint
 router.post('/register',
+    verifyAuthToken,
     body("email")
         .isEmail()
         .withMessage("Email is invalid"),
@@ -50,7 +51,9 @@ router.post('/register',
             });
 
             // Generate a JWT token
-            const jwtToken = jwt.sign({ uid: userRecord.uid }, process.env.SECRET);
+            const jwtToken = jwt.sign({ uid: userRecord.uid }, process.env.SECRET, {
+                expiresIn: 86400 // expires in 24 hours
+            });
 
             // Return the JWT token in the response
             res.json({ message: "User Registetion SuccessFully", token: jwtToken });
@@ -73,6 +76,7 @@ router.post('/login', async (req, res, next) => {
 
         // Generate a JWT token
         const jwtToken = jwt.sign({ uid: user.uid }, process.env.SECRET);
+        req.session.token = jwtToken;
 
         // Return the JWT token in the response
         res.json({ massage: "Login Sucessfully", email: user.email, token: jwtToken });

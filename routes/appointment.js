@@ -2,13 +2,11 @@ const { appointmentsRef, database } = require('../config');
 const { push, set, ref, get } = require('firebase/database');
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
+const { verifyAuthToken } = require('./middleware')
 
 
 // Create a new appointment
-router.post('/appointments', [
-    body('date').isDate().withMessage('Invalid date format'),
-    body('status').isBoolean().withMessage('Status must be a boolean'),
-], async (req, res) => {
+router.post('/appointments', verifyAuthToken, async (req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -35,7 +33,7 @@ router.post('/appointments', [
 })
 
 // Read all appointments
-router.get('/appointments', async (req, res) => {
+router.get('/appointments', verifyAuthToken, async (req, res) => {
     try {
         const snapshot = await get(ref(database, 'appointments'));
         const appointments = snapshot.val();
@@ -50,8 +48,9 @@ router.get('/appointments', async (req, res) => {
 
 
 // Read a specific appointment
-router.get('/appointments/:id', async (req, res) => {
+router.get('/appointments/:id', verifyAuthToken, async (req, res) => {
     try {
+        console.log(req.user)
         const appointmentId = req.params.id;
         const snapshot = await get(ref(database, `appointments/${appointmentId}`));
         const appointment = snapshot.val();
@@ -69,12 +68,12 @@ router.get('/appointments/:id', async (req, res) => {
 
 
 // Update an appointment
-router.put('/appointments/:id', async (req, res) => {
+router.put('/appointments/:id', verifyAuthToken, async (req, res) => {
     try {
         const appointmentId = req.params.id;
         const updatedAppointmentData = req.body;
 
-        
+
         await set(ref(database, `appointments/${appointmentId}`), updatedAppointmentData);
 
 
@@ -89,7 +88,7 @@ router.put('/appointments/:id', async (req, res) => {
 
 
 // Delete an appointment
-router.delete('/appointments/:id', async (req, res) => {
+router.delete('/appointments/:id', verifyAuthToken, async (req, res) => {
     try {
         const appointmentId = req.params.id;
 
