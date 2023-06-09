@@ -1,25 +1,30 @@
 // Import the functions you need from the SDKs you need
-const { initializeApp } = require("firebase/app");
-const { getDatabase, ref } = require("firebase/database");
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+
+const fs = require('firebase-admin');
+const serviceAccount = require('./routes/firebase_auth.json');
+const Timestamp = fs.firestore.Timestamp;
+
+fs.initializeApp({
+  credential: fs.credential.cert(serviceAccount),
+  databaseURL: "https://test-assignment-894db-default-rtdb.asia-southeast1.firebasedatabase.app",
+  authDomain: "test-assignment-894db.firebaseapp.com",
+
+});
+
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCz8WKkQwfA4qbkRkQXaSCOXjRjflJMYvk",
-  authDomain: "test-assignment-894db.firebaseapp.com",
-  projectId: "test-assignment-894db",
-  storageBucket: "test-assignment-894db.appspot.com",
-  messagingSenderId: "1089510591444",
-  appId: "1:1089510591444:web:11818684a56a08dbdea441",
-  databaseURL: 'https://test-assignment-894db-default-rtdb.asia-southeast1.firebasedatabase.app'
+
+const db = fs.firestore();
+const auth = fs.auth()
+const appointmentDb = db.collection("appointments");
+//firebase firestore
+
+
+
+
+
+module.exports = {
+  Timestamp,
+  auth,
+  appointmentDb,
 };
-
-// Initialize Firebase
-
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const appointmentsRef = ref(database, 'appointments');
-
-
-module.exports = { appointmentsRef, database };

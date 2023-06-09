@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 app.use(session({
   name: 'sessionIdCookie',
-  secret:  process.env.SECRET,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -25,10 +25,12 @@ app.use(session({
 // Routes
 const authRouter = require("./routes/auth");
 const appointmentRoute = require('./routes/appointment')
+const userRoute = require('./routes/user')
 
 
 app.use("/auth", authRouter)
 app.use("/api", appointmentRoute)
+app.use("/api", userRoute)
 
 
 

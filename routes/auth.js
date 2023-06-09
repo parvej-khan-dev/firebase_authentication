@@ -1,21 +1,10 @@
 require('dotenv').config()
-
 const jwt = require('jsonwebtoken');
 const router = require("express").Router()
 const { verifyAuthToken } = require('./middleware')
 const { body, validationResult } = require("express-validator");
 const admin = require("firebase-admin");
-
-// Mongo DB Connections
-// Your web app's Firebase configuration
-var serviceAccount = require("./firebase_auth.json");
-
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-
-});
-
+const {auth}= require('../config')
 
 
 // Endpoint for generating a JWT token
@@ -45,7 +34,7 @@ router.post('/register',
 
             console.log(admin)
             // Create the user in Firebase Auth
-            const userRecord = await admin.auth().createUser({
+            const userRecord = await auth.createUser({
                 email,
                 password,
             });
@@ -72,7 +61,7 @@ router.post('/login', async (req, res, next) => {
         const { email, password } = req.body;
 
         // Authenticate the user using Firebase Auth
-        const user = await admin.auth().getUserByEmail(email);
+        const user = await auth.getUserByEmail(email);
 
         // Generate a JWT token
         const jwtToken = jwt.sign({ uid: user.uid }, process.env.SECRET);
