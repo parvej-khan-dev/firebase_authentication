@@ -60,21 +60,37 @@ This project is a simple Express application that integrates with Firebase for u
    npm start
    ```
 
-2. Access the API endpoints through `http://localhost:3000`.
+2. Access the API endpoints through `http://localhost:5000/api`.
 
 ## API Endpoints
 
 ### User Endpoints
 
 - **POST** `/register`: Create a new user account.
+   - Request Body:
+    - `email`: Email address of the user (e.g., `demo@gmail.com`)
+    - `password`: Password for the user account (e.g., `Demo@123`)
 - **POST** `/login`: Authenticate a user and obtain a JWT token.
+    - Request Body:
+    - `email`: Email address of the user (e.g., `demo@gmail.com`)
+    - `password`: Password for the user account (e.g., `Demo@123`)
 
-### Appointment Endpoints
+### Appointment Endpoints 
 
 - **GET** `/appointments`: Get all appointments.
 - **GET** `/appointments/:id`: Get a specific appointment by ID.
 - **POST** `/appointments`: Create a new appointment.
+    - Request Body:
+    - `date`: Date of the appointment
+    - `time`: Time of the appointment
+    - `userId`: ID of the user associated with the appointment
+    - `status`: Status of the appointment
 - **PUT** `/appointments/:id`: Update an existing appointment.
+    - Request Body:
+    - `date`: Updated date of the appointment
+    - `time`: Updated time of the appointment
+    - `userId`: Updated ID of the user associated with the appointment
+    - `status`: Updated status of the appointment
 - **DELETE** `/appointments/:id`: Delete an appointment.
 
 ## Demo Account
@@ -97,13 +113,16 @@ Please make sure to set these variables in the `.env` file before running the ap
 
 ## Firebase Service Account JSON
 
-To enable the integration with Firebase, you need to obtain the Firebase service account JSON file and save it as `firebase.json` in the project root directory. This file contains the necessary credentials for the Firebase SDK to authenticate and access the Firebase services.
+To enable the integration with Firebase, you need to obtain the Firebase service account JSON file and save it as `firebase_auth.json` in the project root directory. This file contains the necessary credentials for the Firebase SDK to authenticate and access the Firebase services.for testing porpuse attech firebase.json file 
+update for firebase.json file in 
+```bash
+#update path under config.js
 
-## Contributing
+const serviceAccount = require('Your file path');
 
-Contributions are welcome! If you find any issues or have suggestions for improvement, please feel free to open an issue or submit a pull request.
+
+```
 
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-p

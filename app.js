@@ -16,7 +16,7 @@ const appointmentRoute = require('./routes/appointment')
 const userRoute = require('./routes/user')
 
 
-app.use("/auth", authRouter)
+app.use("/api", authRouter)
 app.use("/api", appointmentRoute)
 app.use("/api", userRoute)
 
