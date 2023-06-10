@@ -30,9 +30,9 @@ This project is a simple Express application that integrates with Firebase for u
    - Obtain your Firebase project configuration, including the API key, auth domain, etc.
    - Update the `.config.js` file with your Firebase configuration details:
 
-     ```
-    databaseURL: your_database_uri,
-    authDomain: your_auth_domain,
+     ```bash
+      databaseURL: your_database_uri,
+      authDomain: your_auth_domain,
      ```
 
 4. Generate a secret key:
