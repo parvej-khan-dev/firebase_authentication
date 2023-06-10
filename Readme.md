@@ -14,7 +14,7 @@ This project is a simple Express application that integrates with Firebase for u
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your/repo.git
+   git clone https://github.com/your/repo.git // copy link from above 
    ```
 
 2. Install dependencies:
@@ -28,12 +28,11 @@ This project is a simple Express application that integrates with Firebase for u
    - Create a Firebase project on the [Firebase console](https://console.firebase.google.com).
    - Enable the Authentication service and choose the Email/Password sign-in method.
    - Obtain your Firebase project configuration, including the API key, auth domain, etc.
-   - Update the `.env` file with your Firebase configuration details:
+   - Update the `.config.js` file with your Firebase configuration details:
 
      ```
-     API_KEY=your_api_key
-     AUTH_DOMAIN=your_auth_domain
-     PROJECT_ID=your_project_id
+    databaseURL: your_database_uri,
+    authDomain: your_auth_domain,
      ```
 
 4. Generate a secret key:
@@ -42,7 +41,7 @@ This project is a simple Express application that integrates with Firebase for u
    - Update the `.env` file with your secret key:
 
      ```
-     JWT_SECRET=your_secret_key
+     SECRET=your_secret_key
      ```
 
 5. Obtain the Firebase service account JSON file:
